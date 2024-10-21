@@ -1,17 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useMetaMask } from "@/hooks/useMetamask";
 import useBuyNFT from "@/hooks/marketplace/useBuyNFT";
 import { useTokenPrice } from "@/hooks/marketplace/useTokenPrice";
 import { useGetAvailableNfts } from "@/hooks/marketplace/useGetAvailableNfts";
+import NFTItem from "./NFTItem";
 
 const Marketplace: React.FC = () => {
-  const { isConnected, account, connectMetaMask, provider, error } =
-    useMetaMask();
+  const { isConnected } = useMetaMask();
   const { availableNFTs, tokenError: availableNftsError } =
     useGetAvailableNfts();
   const [nftPrice, setNftPrice] = useState<string>("");
@@ -39,7 +38,7 @@ const Marketplace: React.FC = () => {
     }
 
     try {
-      await getBuyNFT(tokenId, nftPrice); // Pasamos el tokenId como número
+      await getBuyNFT(tokenId, nftPrice);
     } catch (err) {
       console.error(err);
     }
@@ -72,25 +71,11 @@ const Marketplace: React.FC = () => {
       >
         {availableNFTs.length > 0 ? (
           availableNFTs.map((tokenId) => (
-            <Box
+            <NFTItem
               key={tokenId}
-              sx={{
-                border: "1px solid grey",
-                padding: "1rem",
-                margin: "1rem",
-                borderRadius: "8px",
-              }}
-            >
-              <Typography variant="h6">NFT #{tokenId}</Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleBuyNFT(tokenId)}
-                sx={{ marginTop: "1rem" }}
-              >
-                Comprar
-              </Button>
-            </Box>
+              tokenId={tokenId}
+              handleBuyNFT={handleBuyNFT}
+            />
           ))
         ) : (
           <Typography variant="body1">

@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,7 +16,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { useMetaMask } from "@/hooks/useMetamask";
 import { useOwnerOf } from "@/hooks/marketplace/useOwnerOf";
 import useConnectedAccount from "@/hooks/getConnectedAccount";
 
@@ -36,11 +35,24 @@ export default function DrawerAppBar(props: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { connectedAddress } = useConnectedAccount();
 
-  const { owner } = useOwnerOf();
-  console.log(connectedAddress);
+  const { getContractOwner, owner, tokenError } = useOwnerOf();
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    const fetchOwner = async () => {
+      try {
+        await getContractOwner(); // Llamamos a la función para obtener el owner
+        console.log("Owner fetched");
+      } catch (error) {
+        console.error("Error fetching owner:", error);
+      }
+    };
+
+    fetchOwner(); // Ejecuta la llamada al montar el componente
+  }, [getContractOwner]);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -60,7 +72,7 @@ export default function DrawerAppBar(props: Props) {
             </ListItemButton>
           </ListItem>
         ))}
-        {owner === connectedAddress && (
+        {owner && connectedAddress && owner === connectedAddress && (
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
@@ -124,7 +136,7 @@ export default function DrawerAppBar(props: Props) {
                 {item.label}
               </Button>
             ))}
-            {owner === connectedAddress && (
+            {owner && connectedAddress && owner === connectedAddress && (
               <Button component={Link} href="/admin" sx={{ color: "#fff" }}>
                 Gestión del Marketplace
               </Button>

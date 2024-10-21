@@ -9,4 +9,4 @@ const MarkeplacePage = () => {
   );
 };
 
-export default Marketplace;
+export default MarkeplacePage;
