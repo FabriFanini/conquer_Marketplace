@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useInitMarketplace from "./initMarketplace";
 import { ethers, BigNumberish } from "ethers";
+import useInitConquerNFT from "./initConquerNFT";
 
 export function useGetAvailableNfts() {
   const [availableNFTs, setAvailableNFTs] = useState<number[]>([]);
@@ -14,14 +15,18 @@ export function useGetAvailableNfts() {
       return;
     }
 
-    const fetchAvailableNFTs = async () => {
-      if (!tokenContract) return;
+    if (!tokenContract) {
+      console.error("tokenContract no está disponible");
+      return;
+    }
 
+    const fetchAvailableNFTs = async () => {
       try {
         const nfts: BigNumberish[] = await tokenContract.getAvailableNFTs();
-        setAvailableNFTs(nfts.map((nft) => Number(ethers.toBigInt(nft))));
+        const nftIds = nfts.map((nft) => Number(ethers.toBigInt(nft)));
+        setAvailableNFTs(nftIds);
       } catch (error: any) {
-        console.error("Error fetching available NFTs:", error);
+        console.error("Error al obtener los NFTs disponibles:", error);
         setTokenError(error.message || "Error fetching available NFTs");
       }
     };

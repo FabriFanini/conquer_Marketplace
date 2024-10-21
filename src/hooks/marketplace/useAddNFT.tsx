@@ -1,8 +1,11 @@
 import { useState, useCallback } from "react";
-import { ethers } from "ethers";
 import useInitMarketplace from "./initMarketplace";
 
-export function useAddNFTToMarketplace() {
+interface UseBalanceProps {
+  tokenURI: string;
+}
+
+export function useAddNFTToMarketplace({ tokenURI }: UseBalanceProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -20,7 +23,7 @@ export function useAddNFTToMarketplace() {
     setSuccess(false);
 
     try {
-      const tx = await tokenContract.addNFTToMarketplace();
+      const tx = await tokenContract.addNFTToMarketplace(tokenURI);
       await tx.wait();
       setSuccess(true);
     } catch (err: any) {
@@ -29,7 +32,7 @@ export function useAddNFTToMarketplace() {
     } finally {
       setLoading(false);
     }
-  }, [tokenContract]);
+  }, [tokenContract, tokenURI]);
 
   return { addNFTToMarketplace, loading, error, success };
 }
