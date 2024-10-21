@@ -53,7 +53,7 @@ export interface MarketplaceInterface extends Interface {
 
   encodeFunctionData(
     functionFragment: "addNFTToMarketplace",
-    values?: undefined
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "buyConquerNFT",
@@ -245,7 +245,11 @@ export interface Marketplace extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  addNFTToMarketplace: TypedContractMethod<[], [void], "nonpayable">;
+  addNFTToMarketplace: TypedContractMethod<
+    [tokenURI: string],
+    [void],
+    "nonpayable"
+  >;
 
   buyConquerNFT: TypedContractMethod<
     [tokenId: BigNumberish],
@@ -303,7 +307,7 @@ export interface Marketplace extends BaseContract {
 
   getFunction(
     nameOrSignature: "addNFTToMarketplace"
-  ): TypedContractMethod<[], [void], "nonpayable">;
+  ): TypedContractMethod<[tokenURI: string], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "buyConquerNFT"
   ): TypedContractMethod<[tokenId: BigNumberish], [void], "payable">;

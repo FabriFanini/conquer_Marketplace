@@ -76,7 +76,7 @@ export interface ConquerNFTInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "mintConquerNFT",
-    values: [AddressLike]
+    values: [AddressLike, string]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -304,7 +304,7 @@ export interface ConquerNFT extends BaseContract {
   >;
 
   mintConquerNFT: TypedContractMethod<
-    [to: AddressLike],
+    [to: AddressLike, _tokenURI: string],
     [bigint],
     "nonpayable"
   >;
@@ -391,7 +391,11 @@ export interface ConquerNFT extends BaseContract {
   >;
   getFunction(
     nameOrSignature: "mintConquerNFT"
-  ): TypedContractMethod<[to: AddressLike], [bigint], "nonpayable">;
+  ): TypedContractMethod<
+    [to: AddressLike, _tokenURI: string],
+    [bigint],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "name"
   ): TypedContractMethod<[], [string], "view">;
