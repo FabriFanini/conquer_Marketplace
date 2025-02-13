@@ -1,0 +1,36 @@
+# Ocultar archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Ocultar la carpeta de dependencias de Node.js
+node_modules/
+
+# Ocultar la carpeta de dependencias de Python
+venv/
+__pycache__/
+
+# Ocultar dependencias de PHP (si usas Composer)
+vendor/
+
+# Ocultar dependencias de Java (si usas Maven o Gradle)
+target/
+.mvn/
+.gradle/
+
+# Archivos de logs y caché
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.parcel-cache/
+.next/
+dist/
+out/
+
+# Archivos de configuración del editor
+.vscode/
+.idea/
+
+# Archivos de compilación
+*.log
+*.lock
