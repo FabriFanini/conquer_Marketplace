@@ -1,10 +1,11 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import { ConquerNFT__factory } from "@/typechain-types";
+import tokenErc721Abi from "@/app/abis/tokenErc721Abi.json"; // ABI del contrato NFT
+
 const useInitConquerNFT = () => {
   const [nftContract, setNftContract] = useState<ethers.Contract | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const contractAddress = process.env.NEXT_PUBLIC_CONQUER_NFT_ADDR;
+  const contractAddress = process.env.NEXT_PUBLIC_CONQUER_NFT_ADDR; // Dirección del contrato NFT en .env.local
 
   useEffect(() => {
     async function initContract() {
@@ -24,16 +25,16 @@ const useInitConquerNFT = () => {
       }
 
       try {
-        const contractABI = ConquerNFT__factory.abi;
+        // Usamos el ABI importado del JSON en lugar de `ConquerNFT__factory.abi`
         const contract = new ethers.Contract(
           contractAddress,
-          contractABI,
+          tokenErc721Abi,
           signer ?? provider
         );
         setNftContract(contract);
       } catch (error) {
-        console.error("Error initializing contract:", error);
-        setError("Failed to initialize contract.");
+        console.error("Error initializing NFT contract:", error);
+        setError("Failed to initialize NFT contract.");
       }
     }
 

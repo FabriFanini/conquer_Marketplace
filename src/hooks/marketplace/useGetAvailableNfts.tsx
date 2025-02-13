@@ -22,7 +22,7 @@ export function useGetAvailableNfts() {
 
     const fetchAvailableNFTs = async () => {
       try {
-        const nfts: BigNumberish[] = await tokenContract.getAvailableNFTs();
+        const nfts: BigNumberish[] = await tokenContract.getAvailablesNFTs();
         const nftIds = nfts.map((nft) => Number(ethers.toBigInt(nft)));
         setAvailableNFTs(nftIds);
       } catch (error: any) {
